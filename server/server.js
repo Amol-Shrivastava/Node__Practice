@@ -6,7 +6,15 @@ const logit = (req, res, next) => {
     next();
 }
 
-connect().use(logit).listen(3000);
+const echo = (req, res) => {
+    req.pipe(res)
+}
+
+connect()
+.use(logit)
+.use('/echo', echo)
+.use((req, res, next) => res.write('Wassup'))
+.listen(3000);
 console.log('Server is running on port 3000 middleware');
 
 // const http = require('http');
