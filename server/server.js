@@ -6,13 +6,24 @@ const logit = (req, res, next) => {
     next();
 }
 
-const echo = (req, res) => {
-    req.pipe(res)
+// const echo = (req, res) => {
+//     req.pipe(res)
+// }
+
+const func1 = (msg) => {
+    return ((req, res, next) => {
+        res.end(msg);
+    })
 }
+
+const gmFunc = func1("Good Morning :) ");
+const gnFunc = func1("Good Night :| ");
+
 
 connect()
 .use(logit)
-.use('/echo', echo)
+.use('/gm', gmFunc)
+.use('/gn', gnFunc)
 .use((req, res, next) => res.write('Wassup'))
 .listen(3000);
 console.log('Server is running on port 3000 middleware');
