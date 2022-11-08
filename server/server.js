@@ -1,30 +1,70 @@
 const express = require('express');
-const serverStatic = require('serve-static');
-const serveIndex = require('serve-index');
 const path = require('path');
-
-
-
+const cookieParser = require('cookie-parser');
 const app = express();
-const stylePath = path.join(__dirname, '..', 'public', 'styles.css');
 
-//1. Simple server initialisation and running using express middleware
-// app.use((req, res, next)=> {
-//     res.end('Welcome to express server.');
+//1. Basic cookie example
+// app.use((req, res, next) => {
+//     // res.cookie('name', 'Amol');
+//     // res.send('Hello Welcome to first cookie example.');
 // }).listen(3000);
 
-//2. Directory module
-// app.use(serverStatic(path.join(__dirname, '..', 'public'))).listen(3000);
-// console.log(path.join(__dirname, '..', 'public', 'js'));
-// console.log(__filename);
+//2. Cookie Parser example converting header cookie into js object
+// app.use(cookieParser())
+// .use((req, res) => {
+//     // console.log(req.headers);
+//     // console.log(res.headers);
+//     if(req.cookies.name)
+//         console.log(`User Name : ${req.cookies.name}`)
+//     else res.cookie('name', 'Amol');
+// }).listen(3000);
 
-//3. Show directory
-app
-.use(express.static(path.join(__dirname, '..', 'public')))
-.use('/js',serveIndex(path.join(__dirname, '..', 'public','js'), {
-    'icons':true,
-    stylesheet: stylePath
-})).listen(3000);
-console.log(path.join(__dirname, '..', 'public','js'));
+//3. Clear Cookie data
+// app.use(cookieParser())
+// .use('/toggle', (req, res) => {
+//     if(req.cookies.name){
+//         res.clearCookie('name');
+//         res.end(`Cookie deleted with value ${req.cookies.name}`);
+//     }else{
+//         res.cookie('name', 'Burdd');
+//         res.end('name Cookie Set');
+//     }
+// }).listen(3000)
+
+// //4. Signed Cookie
+// app.use(cookieParser('This is my first signed Cookie'))
+// .use((req, res) => {
+//     if(req.signedCookies.name){
+//         res.clearCookie('name')
+//         res.send(`value of cookie deleted: ${req.signedCookies.name}`);
+//     }else{
+//         res.cookie('name', 'VKKB', {signed: true});
+//         res.send(`Value of signed cookie set: ${req.signedCookies.name}`)
+//     }
+// }).listen(3000)
+
+// 5. httpOnly Cookie can't be accessed using document.cookie
+// app.use(cookieParser())
+// .use((req, res) => {
+//     if(req.cookies.name){
+//         res.clearCookie('name');
+//         res.send('Value of deleted cookie: '+req.cookies.name);
+//     }else{
+//         res.cookie('name', 'kkjd', {httpOnly: true});
+//         res.send(`Now the cookie can't be accessed using document.cookie`);
+//     }
+// }).listen(3000)
+
+//6. Secure cookie sent over HTTPS only
+app.use(cookieParser())
+.use((req, res) => {
+    if(req.cookies.name) {
+        res.clearCookie('name');
+        res.send('Value of secure cookie deleted: '+req.cookies.name)
+    }else{
+        res.cookie('name', 'resteer', {secure: true});
+        res.send('Now cookie can only be shared over https')
+    }
+}).listen(3000);
 
 console.log('Broda express server is running on port 3000');
