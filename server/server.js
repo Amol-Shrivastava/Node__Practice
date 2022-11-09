@@ -3,25 +3,41 @@ const path = require('path');
 
 const app = express();
 
-app.all('/', (req, res, next) => {
-    res.write('Called all HTTP verb \n');
+//1. API BASICS 
+// app.all('/', (req, res, next) => {
+//     res.write('Called all HTTP verb \n');
+//     next();
+// })
+
+// app.get('/', (req, res, next) => {
+//     res.end('Called get HTTP verb');
+// })
+
+// app.post('/', (req, res, next) => {
+//     res.end('Called post HTTP verb')
+// })
+
+// app.put('/', (req, res, next) => {
+//     res.end('Called put HTTP verb');
+// })
+
+// app.delete('/', (req, res, next) => {
+//     res.end('Called delete HTTP verb');
+// })
+
+//2. app.route() 
+app.route('/')
+.all((req, res, next)=> {
+    res.write('all');
     next();
-})
-
-app.get('/', (req, res, next) => {
-    res.end('Called get HTTP verb');
-})
-
-app.post('/', (req, res, next) => {
-    res.end('Called post HTTP verb')
-})
-
-app.put('/', (req, res, next) => {
-    res.end('Called put HTTP verb');
-})
-
-app.delete('/', (req, res, next) => {
-    res.end('Called delete HTTP verb');
+}).get((req, res) => {
+    res.end('GET');
+}).put((req,res)=> {
+    res.end('PUT');
+}).post((req, res) => {
+    res.end('POST');
+}).delete((req, res) => {
+    res.end('DELETE');
 })
 
 app.listen(3000);
