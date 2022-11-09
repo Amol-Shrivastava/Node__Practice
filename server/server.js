@@ -41,19 +41,30 @@ const app = express();
 // })
 
 //3. parameter based routing
-app.get('/user/:userId', (req, res, next) => {
-    if(req.params['userId']){
-        res.end(JSON.stringify(req.params['userId']));
-    }else{
-        res.end('Nothing passed user_id parameter');
-    }
+// app.get('/user/:userId', (req, res, next) => {
+//     if(req.params['userId']){
+//         res.end(JSON.stringify(req.params['userId']));
+//     }else{
+//         res.end('Nothing passed user_id parameter');
+//     }
+// })
+
+// app.put('/user/:put_value', (req, res, next) => {
+//     if(req.params['put_value'])
+//         res.end(JSON.stringify(req.params['put_value']))
+//     else
+//         res.end('Nothing passed in put_value parameter')
+// })
+
+//4. app.param (function that runs if route matches the path and route is having value of passed parameter as fourth parameter in the middleware)
+app.param('user_id',(req, res, next, user_id) => {
+    res.write('Looking up for user: '+user_id+'\n');
+    req.user = {userId: user_id};
+    next();
 })
 
-app.put('/user/:put_value', (req, res, next) => {
-    if(req.params['put_value'])
-        res.end(JSON.stringify(req.params['put_value']))
-    else
-        res.end('Nothing passed in put_value parameter')
+app.get('/user/:user_id', (req, res) => {
+    res.end('user id is: '+JSON.stringify(req.user.userId))
 })
 
 app.listen(3000);
