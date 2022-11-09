@@ -26,18 +26,34 @@ const app = express();
 // })
 
 //2. app.route() 
-app.route('/')
-.all((req, res, next)=> {
-    res.write('all');
-    next();
-}).get((req, res) => {
-    res.end('GET');
-}).put((req,res)=> {
-    res.end('PUT');
-}).post((req, res) => {
-    res.end('POST');
-}).delete((req, res) => {
-    res.end('DELETE');
+// app.route('/')
+// .all((req, res, next)=> {
+//     res.write('all');
+//     next();
+// }).get((req, res) => {
+//     res.end('GET');
+// }).put((req,res)=> {
+//     res.end('PUT');
+// }).post((req, res) => {
+//     res.end('POST');
+// }).delete((req, res) => {
+//     res.end('DELETE');
+// })
+
+//3. parameter based routing
+app.get('/user/:userId', (req, res, next) => {
+    if(req.params['userId']){
+        res.end(JSON.stringify(req.params['userId']));
+    }else{
+        res.end('Nothing passed user_id parameter');
+    }
+})
+
+app.put('/user/:put_value', (req, res, next) => {
+    if(req.params['put_value'])
+        res.end(JSON.stringify(req.params['put_value']))
+    else
+        res.end('Nothing passed in put_value parameter')
 })
 
 app.listen(3000);
