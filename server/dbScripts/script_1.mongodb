@@ -1,0 +1,3 @@
+use('demo_people');
+// db.people.find({}).projection({}).sort({_id:-1}).limit(100)
+db.people.find({}).sort({name: -1})
